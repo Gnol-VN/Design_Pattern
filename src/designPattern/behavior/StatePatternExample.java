@@ -1,4 +1,4 @@
-package designPattern;
+package designPattern.behavior;
 
 public class StatePatternExample {
     public static void main(String[] args) {

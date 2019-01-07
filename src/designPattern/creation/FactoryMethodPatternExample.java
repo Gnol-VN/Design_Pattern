@@ -1,4 +1,4 @@
-package designPattern;
+package designPattern.creation;
 
 public class FactoryMethodPatternExample {
     public static void main(String[] args) {

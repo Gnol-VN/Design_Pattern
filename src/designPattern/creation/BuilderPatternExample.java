@@ -1,4 +1,4 @@
-package designPattern;
+package designPattern.creation;
 public class BuilderPatternExample {
     public static void main(String[] args) {
         Car car1 = new Car.Builder().setType("Sport car").setWheel(4)

@@ -1,4 +1,4 @@
-package designPattern;
+package designPattern.structure;
 
 public class Decorator2 {
     public static void main(String[] args) {
