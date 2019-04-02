@@ -40,6 +40,18 @@ class HanoiVisitor implements TripVisitor{
         System.out.println("Go to Hanoi by "+ car.getClass().getSimpleName());
     }
 }
+class BeijingVisitor implements TripVisitor{
+
+    @Override
+    public void visit(Plane plane) {
+
+    }
+
+    @Override
+    public void visit(Car car) {
+
+    }
+}
 
 interface Vehicle {
     void accept(TripVisitor tripVisitor);
@@ -50,6 +62,7 @@ class Car implements Vehicle {
     public void accept(TripVisitor tripVisitor) {
         tripVisitor.visit(this);
     }
+
 }
 
 class Plane implements Vehicle {
@@ -58,6 +71,7 @@ class Plane implements Vehicle {
         tripVisitor.visit(this);
     }
 }
+
 
 
 
