@@ -1,5 +1,7 @@
 package designPattern.behavior;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class MementoPattern {
@@ -10,6 +12,9 @@ public class MementoPattern {
         careTaker.setOriginatorState(new OriginatorState("Running"));
         System.out.println(careTaker.getOriginatorState().getStateName());
         careTaker.setOriginatorState(new OriginatorState("Stopped"));
+        careTaker.setOriginatorState(new OriginatorState("Running"));
+        System.out.println(careTaker.getOriginatorState().getStateName());
+        careTaker.undo();
         System.out.println(careTaker.getOriginatorState().getStateName());
         careTaker.undo();
         System.out.println(careTaker.getOriginatorState().getStateName());
@@ -21,7 +26,7 @@ interface Memento{ //Tag interface: the state of originator before change
 
 }
 
-interface Originator{ // The thing which changes
+interface Originator{
     public void restore(Memento memento);
     public Memento createMemento();
 }
@@ -39,6 +44,11 @@ class OriginatorState{
 
     }
 }
+
+/**
+ * The thing which changes
+ * Concrete Originator can not actively change its state. It does not store the state stack
+ */
 class ConcreteOriginator implements Originator{
     private OriginatorState currentState;
 
@@ -66,7 +76,7 @@ class ConcreteOriginator implements Originator{
 
     }
 
-    class ConcreteMemento implements Memento{
+    private class ConcreteMemento implements Memento{
         private OriginatorState originatorState;
 
         public OriginatorState getOriginatorState() {
