@@ -1,24 +1,20 @@
 package designPattern.behavior;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class MementoPattern {
     public static void main(String[] args) {
         ConcreteOriginator concreteOriginator = new ConcreteOriginator();
         CareTaker careTaker = new CareTaker(concreteOriginator);
-
-        careTaker.setOriginatorState(new OriginatorState("Running"));
+        careTaker.setOriginatorState(new State_Originator("Running"));
         System.out.println(careTaker.getOriginatorState().getStateName());
-        careTaker.setOriginatorState(new OriginatorState("Stopped"));
-        careTaker.setOriginatorState(new OriginatorState("Running"));
-        System.out.println(careTaker.getOriginatorState().getStateName());
-        careTaker.undo();
+        careTaker.setOriginatorState(new State_Originator("Stopped"));
+        careTaker.setOriginatorState(new State_Originator("Running"));
         System.out.println(careTaker.getOriginatorState().getStateName());
         careTaker.undo();
         System.out.println(careTaker.getOriginatorState().getStateName());
-
+        careTaker.undo();
+        System.out.println(careTaker.getOriginatorState().getStateName());
     }
 }
 
@@ -26,20 +22,20 @@ interface Memento{ //Tag interface: the state of originator before change
 
 }
 
-interface Originator{
+interface IOriginator {
     public void restore(Memento memento);
     public Memento createMemento();
 }
 
 
-class OriginatorState{
+class State_Originator {
     private String stateName;
 
     public String getStateName() {
         return stateName;
     }
 
-    public OriginatorState(String stateName) {
+    public State_Originator(String stateName) {
         this.stateName = stateName;
 
     }
@@ -49,15 +45,15 @@ class OriginatorState{
  * The thing which changes
  * Concrete Originator can not actively change its state. It does not store the state stack
  */
-class ConcreteOriginator implements Originator{
-    private OriginatorState currentState;
+class ConcreteOriginator implements IOriginator {
+    private State_Originator currentState;
 
 
-    public OriginatorState getCurrentState() {
+    public State_Originator getCurrentState() {
         return currentState;
     }
 
-    public void setCurrentState(OriginatorState currentState) {
+    public void setCurrentState(State_Originator currentState) {
         this.currentState = currentState;
     }
 
@@ -65,26 +61,26 @@ class ConcreteOriginator implements Originator{
     @Override
     public Memento createMemento() {
         ConcreteMemento concreteMemento = new ConcreteMemento();
-        concreteMemento.setOriginatorState(currentState);
+        concreteMemento.setStateOriginator(currentState);
         return concreteMemento;
     }
 
     @Override
     public void restore(Memento memento) {
         ConcreteMemento concreteMemento = (ConcreteMemento) memento;
-        this.currentState = concreteMemento.getOriginatorState();
+        this.currentState = concreteMemento.getStateOriginator();
 
     }
-
+    //The inner Memento class must be PRIVATE
     private class ConcreteMemento implements Memento{
-        private OriginatorState originatorState;
+        private State_Originator stateOriginator;
 
-        public OriginatorState getOriginatorState() {
-            return originatorState;
+        public State_Originator getStateOriginator() {
+            return stateOriginator;
         }
 
-        public void setOriginatorState(OriginatorState originatorState) {
-            this.originatorState = originatorState;
+        public void setStateOriginator(State_Originator stateOriginator) {
+            this.stateOriginator = stateOriginator;
         }
     }
 }
@@ -102,14 +98,14 @@ class CareTaker{
         this.originator = originator;
     }
 
-    public void setOriginatorState(OriginatorState originatorState){
+    public void setOriginatorState(State_Originator stateOriginator){
         mementoStack.push(originator.createMemento());
-        originator.setCurrentState(originatorState);
+        originator.setCurrentState(stateOriginator);
     }
     public void undo(){
         originator.restore(mementoStack.pop());
     }
-    public OriginatorState getOriginatorState() {
+    public State_Originator getOriginatorState() {
         return originator.getCurrentState();
     }
 
